@@ -1,13 +1,27 @@
 <?php
 
+/*
+Función para crear el path donde se mostraran los datos
+ */
 function api7_estvi_menu()
 {
     $items['apil'] = array(
+        'title' => t('Tabla con datos'),
         'page callback' => 'api7_estvi_list',
         'access arguments' => array('access content'),
     );
+
+    $items['apil/descarga'] = array(
+        'title' => t('Descargar datos'),
+        'page callback' => 'api7_estvi_descarga',
+        'access arguments' => true,
+        'type' => MENU_CALLBACK,
+    );
+
     return $items;
 }
+
+/*Presentación de datos */
 function api7_estvi_list()
 {
 
@@ -19,25 +33,63 @@ function api7_estvi_list()
 
         ],
     ];
-
     $response = drupal_http_request($url, $options);
     $values = $response->data;
-
     $datos = drupal_json_decode($response->data);
 
     $json_response = drupal_json_decode($response->data);
-  
 
-    return theme('api7_estvi_information', array('datos_api' => $json_response));
+    /*Se retorna el templeta para renderizar */
+    return theme('api7_estvi', array('datos_api' => $json_response));
 
+}
+
+function api7_estvi_descarga()
+{
+
+
+    /**
+     * 
+     * 
+     * Obtención de datos a través de API
+     */
+
+    $url = 'https://jsonplaceholder.typicode.com/posts';
+
+    $options = [
+        'http' => [
+            'method' => 'GET',
+
+        ],
+    ];
+    $response = drupal_http_request($url, $options);
+    $values = $response->data;
+    $datos = drupal_json_decode($response->data);
+
+    $json_response = drupal_json_decode($response->data);
+
+//Encabezado https
+    drupal_add_http_header('Content-Type', 'text/csv; utf-8');
+    drupal_add_http_header('Content-Disposition', 'attachment; filename = datos.csv');
+
+
+    $fo = fopen('php://output', 'w');
+    fputcsv($fo, array(t('Userid'), t('Id'),t('Title'),t('Body')));
+
+
+    foreach ($json_response as $valores) {
+        fputcsv($fo, array($valores['userId'], $valores['id'], $valores['title'], $valores['body']));
+    }
+
+    fclose($fo);
 }
 
 function api7_estvi_theme()
 {
     return array(
-        'api7_estvi_information' => array(
-            'template' => 'api7-estvi-information',
-            'path' => drupal_get_path('modules', 'api7_estvi') . '/templates',
+        'api7_estvi' => array(
+            'template' => 'api7-estvi',
+            'path' => drupal_get_path('module', 'api7_estvi') . '/templates',
             'variables' => array(
                 'datos_api' => null,
             ),
