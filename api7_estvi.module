@@ -11,11 +11,11 @@ function api7_estvi_menu()
         'access arguments' => array('access content'),
     );
 
-    $items['apil/descarga'] = array(
+    $items['apil/descargar'] = array(
         'title' => t('Descargar datos'),
         'page callback' => 'api7_estvi_descarga',
-        'access arguments' => true,
-        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+
     );
 
     return $items;

@@ -6,6 +6,8 @@
  */
 ?>
 
+<a href='/apil/descargar'>Descargar</a>
+
 <?php if (!empty($datos_api)): ?>
     <table>
     <th>userId</th>
