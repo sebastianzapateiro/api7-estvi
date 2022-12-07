@@ -138,5 +138,5 @@ En el template creado se recorren cada uno de los datos del arreglo y se present
 
 
 
-Para validar el funcionamiento del modulo puede entrar a la dirección https://estrenar-vivienda7.sebastianzapateiro.tech
+Para validar el funcionamiento del modulo puede entrar a la dirección http://estrenar-vivienda7.sebastianzapateiro.tech/apil
 
