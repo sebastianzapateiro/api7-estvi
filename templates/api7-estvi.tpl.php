@@ -6,7 +6,7 @@
  */
 ?>
 
-<a href='/apil/descargar'>Descargar</a>
+<a href='/apil/descargar'>Descargar datos en formato CSV</a>
 
 <?php if (!empty($datos_api)): ?>
     <table>
