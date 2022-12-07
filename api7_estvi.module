@@ -1,2 +1,46 @@
 <?php
 
+function api7_estvi_menu()
+{
+    $items['apil'] = array(
+        'page callback' => 'api7_estvi_list',
+        'access arguments' => array('access content'),
+    );
+    return $items;
+}
+function api7_estvi_list()
+{
+
+    $url = 'https://jsonplaceholder.typicode.com/posts';
+
+    $options = [
+        'http' => [
+            'method' => 'GET',
+
+        ],
+    ];
+
+    $response = drupal_http_request($url, $options);
+    $values = $response->data;
+
+    $datos = drupal_json_decode($response->data);
+
+    $json_response = drupal_json_decode($response->data);
+  
+
+    return theme('api7_estvi_information', array('datos_api' => $json_response));
+
+}
+
+function api7_estvi_theme()
+{
+    return array(
+        'api7_estvi_information' => array(
+            'template' => 'api7-estvi-information',
+            'path' => drupal_get_path('modules', 'api7_estvi') . '/templates',
+            'variables' => array(
+                'datos_api' => null,
+            ),
+        ),
+    );
+}
